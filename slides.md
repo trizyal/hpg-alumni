@@ -12,7 +12,7 @@ fonts:
 <div class="grid grid-cols-12 gap-8 h-full items-center relative">
   <div v-motion :initial="{ scale: 0.65, opacity: 0 }" :enter="{ scale: 1, opacity: 1, transition: { duration: 650, type: 'spring' } }" class="col-span-7">
     <div style="view-transition-name: section-tag" class="inline-flex items-center gap-2 font-mono text-xs tracking-widest text-fuchsia-400 uppercase mb-3 px-2.5 py-1 rounded border border-fuchsia-500/40 bg-fuchsia-500/10">
-      <span>✦ 01 // ALUMNI TALK</span>
+      <span>&#10022; 01 // ALUMNI TALK</span>
       <span class="text-cyan-400">• MSc GRAPHICS & GAMES</span>
     </div>
     <h1 class="text-5xl font-bold tracking-tight leading-tight mb-4">
@@ -30,7 +30,7 @@ fonts:
       <span class="h-1.5 w-4 bg-fuchsia-500 rounded-sm" />
       <span class="h-1.5 w-12 bg-purple-500 rounded-sm" />
       <span class="h-1.5 w-3 bg-teal-400 rounded-sm" />
-      <span class="text-fuchsia-400 text-xs font-mono ml-2">✦ RENDER_ONLINE</span>
+      <span class="text-fuchsia-400 text-xs font-mono ml-2">&#10022; RENDER_ONLINE</span>
     </div>
     <div class="flex gap-2.5 font-mono text-xs">
       <span class="px-3 py-1.5 rounded bg-cyan-950/60 border border-cyan-400/50 text-cyan-300">C++ / HLSL / GLSL</span>
@@ -48,7 +48,7 @@ fonts:
 <!-- SLIDE 2: WHAT DO I DO? -->
 <div class="grid grid-cols-12 gap-6 h-full items-center">
   <div class="col-span-7">
-    <div style="view-transition-name: section-tag" class="font-mono text-xs text-cyan-400 mb-1">✦ 02 // SYSTEM_ROLE</div>
+    <div style="view-transition-name: section-tag" class="font-mono text-xs text-cyan-400 mb-1">&#10022; 02 // SYSTEM_ROLE</div>
     <h2 v-motion :initial="{ scale: 1.35, opacity: 0 }" :enter="{ scale: 1, opacity: 1, transition: { duration: 500 } }" class="text-3xl font-bold mb-4">
       What Does a <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-fuchsia-400">Graphics Programmer</span> Do?
     </h2>
@@ -75,7 +75,7 @@ fonts:
 ---
 
 <!-- SLIDE 3: EXPERIENCE IN 3RD & 4TH YEARS -->
-<div style="view-transition-name: section-tag" class="font-mono text-xs text-fuchsia-400 mb-1">✦ 03 // SKILL_TREE_UNLOCKED</div>
+<div style="view-transition-name: section-tag" class="font-mono text-xs text-fuchsia-400 mb-1">&#10022; 03 // SKILL_TREE_UNLOCKED</div>
 <h2 v-motion :initial="{ scale: 0.6, opacity: 0 }" :enter="{ scale: 1, opacity: 1 }" class="text-3xl font-bold mb-4">
   3rd & 4th Year: <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-fuchsia-400">Where Everything Clicked</span>
 </h2>
@@ -106,7 +106,7 @@ fonts:
 <!-- SLIDE 4: RENDERING - RAYTRACING - FYP -->
 <div class="grid grid-cols-12 gap-6 h-full items-center">
   <div v-motion :initial="{ scale: 0.55, opacity: 0 }" :enter="{ scale: 1, opacity: 1, transition: { duration: 600 } }" class="col-span-6">
-    <div style="view-transition-name: section-tag" class="font-mono text-xs text-fuchsia-400 mb-1">✦ 04 // FINAL_YEAR_PROJECT</div>
+    <div style="view-transition-name: section-tag" class="font-mono text-xs text-fuchsia-400 mb-1">&#10022; 04 // FINAL_YEAR_PROJECT</div>
     <h2 class="text-3xl font-bold mb-3">
       Rendering & <span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 to-cyan-400">Raytracing FYP</span>
     </h2>
@@ -114,9 +114,9 @@ fonts:
       Building a raytracer from scratch taught me more about light transport and GPU architecture than any textbook.
     </p>
     <ul class="space-y-2 text-xs text-slate-200 font-mono">
-      <li v-click class="p-2.5 rounded bg-cyan-950/40 border border-cyan-500/40"><span class="text-cyan-400">✦</span> BVH Acceleration Structures (O(log N) traversal)</li>
-      <li v-click class="p-2.5 rounded bg-fuchsia-950/40 border border-fuchsia-500/40"><span class="text-fuchsia-400">✦</span> Path Tracing, Reflections & Soft Shadows</li>
-      <li v-click class="p-2.5 rounded bg-purple-950/40 border border-purple-500/40"><span class="text-purple-400">✦</span> Optimizing ray-triangle intersection & cache locality</li>
+      <li v-click class="p-2.5 rounded bg-cyan-950/40 border border-cyan-500/40"><span class="text-cyan-400">&#10022;</span> BVH Acceleration Structures (O(log N) traversal)</li>
+      <li v-click class="p-2.5 rounded bg-fuchsia-950/40 border border-fuchsia-500/40"><span class="text-fuchsia-400">&#10022;</span> Path Tracing, Reflections & Soft Shadows</li>
+      <li v-click class="p-2.5 rounded bg-purple-950/40 border border-purple-500/40"><span class="text-purple-400">&#10022;</span> Optimizing ray-triangle intersection & cache locality</li>
     </ul>
   </div>
   <div v-motion :initial="{ scale: 1.5, opacity: 0 }" :enter="{ scale: 1, opacity: 1, transition: { duration: 750 } }" class="col-span-6 h-80">
@@ -132,19 +132,19 @@ fonts:
     <ShaderViewport sceneType="game" initialMode="shaded" />
   </div>
   <div class="col-span-7">
-    <div style="view-transition-name: section-tag" class="font-mono text-xs text-teal-400 mb-1">✦ 05 // WHY_WE_BUILD</div>
+    <div style="view-transition-name: section-tag" class="font-mono text-xs text-teal-400 mb-1">&#10022; 05 // WHY_WE_BUILD</div>
     <h2 class="text-3xl font-bold mb-4">
       The Joy of <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-cyan-400 to-fuchsia-400">Making a Game</span>
     </h2>
     <div class="space-y-4">
       <div v-click v-motion :initial="{ scale: 1.25, opacity: 0 }" :enter="{ scale: 1, opacity: 1 }" class="p-4 rounded-xl bg-gradient-to-r from-cyan-950/50 via-slate-950 to-slate-950 border border-cyan-500/40">
-        <h3 class="text-base font-bold text-cyan-300 mb-1">✦ Instant Visual Feedback</h3>
+        <h3 class="text-base font-bold text-cyan-300 mb-1">&#10022; Instant Visual Feedback</h3>
         <p class="text-xs text-slate-300 leading-relaxed">
           Unlike backend systems where success is a green log line, in graphics programming a math equation turns into water caustics, volumetric fog, or holographic reflections right on screen.
         </p>
       </div>
       <div v-click v-motion :initial="{ scale: 1.25, opacity: 0 }" :enter="{ scale: 1, opacity: 1 }" class="p-4 rounded-xl bg-gradient-to-r from-fuchsia-950/50 via-slate-950 to-slate-950 border border-fuchsia-500/40">
-        <h3 class="text-base font-bold text-fuchsia-300 mb-1">✦ The "2 AM Breakthrough"</h3>
+        <h3 class="text-base font-bold text-fuchsia-300 mb-1">&#10022; The "2 AM Breakthrough"</h3>
         <p class="text-xs text-slate-300 leading-relaxed">
           Fixing a single inverted normal or broken UV coordinate and suddenly watching an entire scene come alive is an unbeatable feeling.
         </p>
@@ -158,7 +158,7 @@ fonts:
 <!-- SLIDE 6: GETTING A JOB FROM IT -->
 <div class="grid grid-cols-12 gap-6 h-full items-center">
   <div class="col-span-7">
-    <div style="view-transition-name: section-tag" class="font-mono text-xs text-cyan-400 mb-1">✦ 06 // ACCESS_GRANTED</div>
+    <div style="view-transition-name: section-tag" class="font-mono text-xs text-cyan-400 mb-1">&#10022; 06 // ACCESS_GRANTED</div>
     <h2 class="text-3xl font-bold mb-4">
       Turning This Course Into a <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">Studio Offer</span>
     </h2>
@@ -182,7 +182,7 @@ fonts:
 ---
 
 <!-- SLIDE 7: HOW FUN THE JOB IS -->
-<div style="view-transition-name: section-tag" class="font-mono text-xs text-fuchsia-400 mb-1">✦ 07 // STUDIO_LIFE</div>
+<div style="view-transition-name: section-tag" class="font-mono text-xs text-fuchsia-400 mb-1">&#10022; 07 // STUDIO_LIFE</div>
 <h2 v-motion :initial="{ scale: 1.3, opacity: 0 }" :enter="{ scale: 1, opacity: 1 }" class="text-3xl font-bold mb-4">
   How Fun Is the <span class="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-400 via-purple-400 to-cyan-400">Industry Actually?</span>
 </h2>
@@ -221,7 +221,7 @@ fonts:
 <!-- SLIDE 8: FAQs -->
 <div class="grid grid-cols-12 gap-6 h-full items-center">
   <div class="col-span-8">
-    <div style="view-transition-name: section-tag" class="font-mono text-xs text-cyan-400 mb-1">✦ 08 // DATA_STREAM</div>
+    <div style="view-transition-name: section-tag" class="font-mono text-xs text-cyan-400 mb-1">&#10022; 08 // DATA_STREAM</div>
     <h2 class="text-3xl font-bold mb-4">Questions You're Probably Thinking</h2>
     <div class="space-y-2.5 text-xs">
       <div v-click v-motion :initial="{ scale: 1.2, opacity: 0 }" :enter="{ scale: 1, opacity: 1 }" class="p-3 rounded-lg bg-slate-950/90 border border-cyan-500/30">
@@ -250,7 +250,7 @@ fonts:
   <!-- Decorative Holographic Glow Orb -->
   <div class="pointer-events-none absolute w-72 h-72 rounded-full bg-gradient-to-tr from-cyan-500/15 via-fuchsia-500/15 to-purple-500/15 blur-3xl" />
 
-  <div style="view-transition-name: section-tag" class="font-mono text-xs tracking-widest text-fuchsia-400 uppercase mb-3">✦ 09 // TARGET_LOCKED • Q&A</div>
+  <div style="view-transition-name: section-tag" class="font-mono text-xs tracking-widest text-fuchsia-400 uppercase mb-3">&#10022; 09 // TARGET_LOCKED • Q&A</div>
   <h2 class="text-5xl font-bold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-fuchsia-300">
     Ask Me Anything!
   </h2>
