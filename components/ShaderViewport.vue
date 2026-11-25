@@ -10,15 +10,14 @@ const props = defineProps({
 
 const container = ref(null);
 const mode = ref(props.initialMode);
-const camPreset = ref("dutch");
+const camPreset = ref("default");
 
 let renderer, scene, camera, controls, rootGroup, frameId, resizeObserver;
 const meshes = [];
 const wireMeshes = [];
 const animatedObjects = [];
 
-const targetCamPos = new THREE.Vector3(0.8, 0.5, 4.4);
-const targetCamRotZ = ref(-0.14);
+const targetCamPos = new THREE.Vector3(0.6, 0.4, 4.3);
 let isTransitioning = false;
 
 const setCameraPreset = (preset) => {
@@ -26,13 +25,10 @@ const setCameraPreset = (preset) => {
   isTransitioning = true;
   if (preset === "macro") {
     targetCamPos.set(1.2, 0.6, 2.1);
-    targetCamRotZ.value = 0.16;
   } else if (preset === "wide") {
     targetCamPos.set(-1.5, 2.2, 5.4);
-    targetCamRotZ.value = -0.18;
   } else {
     targetCamPos.set(0.6, 0.4, 4.3);
-    targetCamRotZ.value = -0.1;
   }
 };
 
@@ -57,6 +53,7 @@ const registerMesh = (
   parent,
   pos = [0, 0, 0],
   alwaysWire = false,
+  wireColor = 0xff2a85,
 ) => {
   const m = new THREE.Mesh(geo, mat);
   m.position.set(...pos);
@@ -66,9 +63,9 @@ const registerMesh = (
 
   const wGeo = new THREE.WireframeGeometry(geo);
   const wMat = new THREE.LineBasicMaterial({
-    color: 0x38bdf8,
+    color: wireColor,
     transparent: true,
-    opacity: 0.6,
+    opacity: 0.65,
   });
   const w = new THREE.LineSegments(wGeo, wMat);
   w.position.copy(m.position);
@@ -92,7 +89,6 @@ onMounted(() => {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   el.appendChild(renderer.domElement);
 
-  // ResizeObserver ensures off-screen slides resize properly once visible
   resizeObserver = new ResizeObserver(() => {
     if (!el || !renderer || !camera) return;
     const nw = el.clientWidth;
@@ -112,43 +108,52 @@ onMounted(() => {
     isTransitioning = false;
   });
 
-  const key = new THREE.DirectionalLight(0x38bdf8, 3.2);
+  // Cyber-Holographic 3-Point Lighting (Electric Cyan + Neon Magenta + Violet)
+  const key = new THREE.DirectionalLight(0x00f0ff, 3.6);
   key.position.set(4, 5, 5);
-  const rim = new THREE.DirectionalLight(0xf59e0b, 2.2);
-  rim.position.set(-4, -3, -2);
-  scene.add(key, rim, new THREE.AmbientLight(0x1e293b, 1.5));
+  const rimMagenta = new THREE.DirectionalLight(0xff2a85, 3.2);
+  rimMagenta.position.set(-4, -2, 3);
+  const rimViolet = new THREE.PointLight(0x9d4edd, 4.0, 12);
+  rimViolet.position.set(0, 3, -3);
+  scene.add(key, rimMagenta, rimViolet, new THREE.AmbientLight(0x1e1b4b, 1.8));
 
   rootGroup = new THREE.Group();
-  rootGroup.rotation.z = -0.14;
   scene.add(rootGroup);
 
-  const cyanMat = new THREE.MeshStandardMaterial({
-    color: 0x38bdf8,
-    metalness: 0.75,
-    roughness: 0.2,
-  });
-  const amberMat = new THREE.MeshStandardMaterial({
-    color: 0xf59e0b,
-    metalness: 0.7,
-    roughness: 0.25,
-  });
-  const emeraldMat = new THREE.MeshStandardMaterial({
-    color: 0x10b981,
+  // Holographic Iridescent PBR Materials
+  const holoCyanMat = new THREE.MeshPhysicalMaterial({
+    color: 0x00f0ff,
     metalness: 0.65,
-    roughness: 0.25,
+    roughness: 0.15,
+    iridescence: 1.0,
+    iridescenceIOR: 1.6,
+    clearcoat: 1.0,
   });
-  const slateMat = new THREE.MeshStandardMaterial({
-    color: 0x334155,
+  const neonMagentaMat = new THREE.MeshPhysicalMaterial({
+    color: 0xff2a85,
+    metalness: 0.6,
+    roughness: 0.2,
+    iridescence: 0.85,
+    clearcoat: 0.8,
+  });
+  const cyberVioletMat = new THREE.MeshPhysicalMaterial({
+    color: 0x9d4edd,
+    metalness: 0.65,
+    roughness: 0.18,
+    iridescence: 1.0,
+  });
+  const mintMat = new THREE.MeshStandardMaterial({
+    color: 0x2ec4b6,
     metalness: 0.5,
-    roughness: 0.4,
+    roughness: 0.25,
   });
 
   if (props.sceneType === "pipeline") {
     const stages = [
-      { pos: [-1.8, 0.4, 0], mat: cyanMat },
-      { pos: [-0.6, -0.2, 0.3], mat: amberMat },
-      { pos: [0.6, 0.3, -0.2], mat: emeraldMat },
-      { pos: [1.8, -0.3, 0.2], mat: cyanMat },
+      { pos: [-1.8, 0.4, 0], mat: holoCyanMat, wire: 0x00f0ff },
+      { pos: [-0.6, -0.2, 0.3], mat: neonMagentaMat, wire: 0xff2a85 },
+      { pos: [0.6, 0.3, -0.2], mat: cyberVioletMat, wire: 0x9d4edd },
+      { pos: [1.8, -0.3, 0.2], mat: mintMat, wire: 0x2ec4b6 },
     ];
     stages.forEach((s, idx) => {
       const box = registerMesh(
@@ -156,6 +161,8 @@ onMounted(() => {
         s.mat,
         rootGroup,
         s.pos,
+        false,
+        s.wire,
       );
       animatedObjects.push({
         obj: box.mesh,
@@ -166,29 +173,32 @@ onMounted(() => {
     });
     registerMesh(
       new THREE.CylinderGeometry(0.03, 0.03, 4.2, 12),
-      slateMat,
+      cyberVioletMat,
       rootGroup,
       [0, 0, 0],
     ).mesh.rotation.z = Math.PI / 2;
   } else if (props.sceneType === "raytrace") {
     const sphere = registerMesh(
       new THREE.IcosahedronGeometry(0.75, 3),
-      cyanMat,
+      holoCyanMat,
       rootGroup,
       [0.4, -0.1, 0],
+      false,
+      0x00f0ff,
     );
     animatedObjects.push({ obj: sphere.mesh, wire: sphere.wire, spin: 0.008 });
     registerMesh(
       new THREE.BoxGeometry(1.75, 1.75, 1.75),
-      slateMat,
+      cyberVioletMat,
       rootGroup,
       [0.4, -0.1, 0],
       true,
+      0xff2a85,
     );
 
     const ray1 = registerMesh(
       new THREE.CylinderGeometry(0.025, 0.025, 2.2, 8),
-      amberMat,
+      neonMagentaMat,
       rootGroup,
       [-1.1, 0.7, 0.2],
     );
@@ -197,7 +207,7 @@ onMounted(() => {
 
     const ray2 = registerMesh(
       new THREE.CylinderGeometry(0.02, 0.02, 2.0, 8),
-      emeraldMat,
+      mintMat,
       rootGroup,
       [0.8, 1.0, -0.3],
     );
@@ -206,27 +216,35 @@ onMounted(() => {
   } else if (props.sceneType === "game") {
     registerMesh(
       new THREE.CylinderGeometry(1.4, 0.9, 0.45, 7),
-      slateMat,
+      cyberVioletMat,
       rootGroup,
       [0, -0.6, 0],
+      false,
+      0x9d4edd,
     );
     registerMesh(
       new THREE.ConeGeometry(0.45, 1.1, 6),
-      emeraldMat,
+      mintMat,
       rootGroup,
       [-0.45, 0.1, -0.2],
+      false,
+      0x2ec4b6,
     );
     registerMesh(
       new THREE.ConeGeometry(0.35, 0.85, 6),
-      emeraldMat,
+      holoCyanMat,
       rootGroup,
       [0.1, -0.05, -0.4],
+      false,
+      0x00f0ff,
     );
     const gem = registerMesh(
-      new THREE.OctahedronGeometry(0.32, 0),
-      amberMat,
+      new THREE.OctahedronGeometry(0.34, 0),
+      neonMagentaMat,
       rootGroup,
       [0.55, 0.45, 0.35],
+      false,
+      0xff2a85,
     );
     animatedObjects.push({
       obj: gem.mesh,
@@ -241,21 +259,25 @@ onMounted(() => {
       const x = Math.cos(t) * 1.1;
       const z = Math.sin(t) * 1.1;
       const y = (i - 3.5) * 0.38;
-      const mat = i === 7 ? amberMat : i > 4 ? emeraldMat : cyanMat;
+      const mat = i === 7 ? neonMagentaMat : i > 4 ? mintMat : holoCyanMat;
       const node = registerMesh(
         new THREE.OctahedronGeometry(i === 7 ? 0.32 : 0.2, 1),
         mat,
         rootGroup,
         [x, y, z],
+        false,
+        i === 7 ? 0xff2a85 : 0x00f0ff,
       );
       animatedObjects.push({ obj: node.mesh, wire: node.wire, spin: 0.02 });
     }
   } else {
     const hero = registerMesh(
       new THREE.TorusKnotGeometry(1.05, 0.35, 180, 36),
-      cyanMat,
+      holoCyanMat,
       rootGroup,
       [0, 0, 0],
+      false,
+      0xff2a85,
     );
     animatedObjects.push({ obj: hero.mesh, wire: hero.wire, spin: 0.007 });
   }
@@ -281,13 +303,7 @@ onMounted(() => {
 
     if (isTransitioning) {
       camera.position.lerp(targetCamPos, 0.06);
-      rootGroup.rotation.z = THREE.MathUtils.lerp(
-        rootGroup.rotation.z,
-        targetCamRotZ.value,
-        0.06,
-      );
-      if (camera.position.distanceTo(targetCamPos) < 0.02)
-        isTransitioning = false;
+      if (camera.position.distanceTo(targetCamPos) < 0.02) isTransitioning = false;
     }
 
     controls.update();
@@ -306,39 +322,53 @@ onUnmounted(() => {
 
 <template>
   <div
-    class="relative w-full h-full rounded-xl overflow-hidden border border-slate-700/80 bg-slate-950/80 backdrop-blur shadow-2xl shadow-sky-950/30"
+    class="relative w-full h-full rounded-xl overflow-hidden border border-fuchsia-500/40 bg-[#07070D]/90 backdrop-blur shadow-[0_0_30px_rgba(255,42,133,0.12)]"
   >
+    <!-- Cyber grid + subtle corner HUD brackets -->
     <div
-      class="pointer-events-none absolute inset-0 bg-[radial-gradient(#1e293b_1px,transparent_1px)] [background-size:16px_16px] opacity-35"
+      class="pointer-events-none absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:18px_18px] opacity-20"
     />
     <div
-      ref="container"
-      class="w-full h-full cursor-grab active:cursor-grabbing relative z-10"
+      class="pointer-events-none absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-cyan-400 z-20"
     />
     <div
-      class="absolute top-2.5 left-2.5 z-20 font-mono text-[10px] px-2 py-0.5 rounded bg-slate-900/90 border border-slate-700/80 text-sky-400 uppercase"
+      class="pointer-events-none absolute top-0 right-0 w-3 h-3 border-t-2 border-r-2 border-fuchsia-500 z-20"
+    />
+    <div
+      class="pointer-events-none absolute bottom-0 left-0 w-3 h-3 border-b-2 border-l-2 border-fuchsia-500 z-20"
+    />
+    <div
+      class="pointer-events-none absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-cyan-400 z-20"
+    />
+
+    <div ref="container" class="w-full h-full cursor-grab active:cursor-grabbing relative z-10" />
+
+    <div
+      class="absolute top-2.5 left-3 z-20 font-mono text-[10px] px-2 py-0.5 rounded bg-black/80 border border-cyan-400/50 text-cyan-300 uppercase tracking-wider"
     >
-      VIEWPORT // {{ sceneType }}
+      ✦ SYS // {{ sceneType }}
     </div>
+
     <div
-      class="absolute top-2.5 right-2.5 z-20 flex gap-1 bg-slate-900/90 p-1 rounded-lg border border-slate-700/80 font-mono text-[10px]"
+      class="absolute top-2.5 right-3 z-20 flex gap-1 bg-black/80 p-1 rounded border border-fuchsia-500/40 font-mono text-[10px]"
     >
       <button
-        v-for="c in ['dutch', 'macro', 'wide']"
+        v-for="c in ['default', 'macro', 'wide']"
         :key="c"
         @click="setCameraPreset(c)"
         :class="
           camPreset === c
-            ? 'bg-amber-400 text-slate-950 font-bold'
-            : 'text-slate-400 hover:text-white'
+            ? 'bg-fuchsia-500 text-white font-bold shadow-[0_0_10px_#ff2a85]'
+            : 'text-slate-400 hover:text-cyan-300'
         "
         class="px-1.5 py-0.5 rounded uppercase transition cursor-pointer"
       >
         {{ c }}
       </button>
     </div>
+
     <div
-      class="absolute bottom-2.5 left-2.5 z-20 flex gap-1 bg-slate-900/90 p-1 rounded-lg border border-slate-700/80 font-mono text-[10px]"
+      class="absolute bottom-2.5 left-3 z-20 flex gap-1 bg-black/80 p-1 rounded border border-cyan-500/40 font-mono text-[10px]"
     >
       <button
         v-for="m in ['shaded', 'normals', 'wireframe']"
@@ -346,8 +376,8 @@ onUnmounted(() => {
         @click="setMode(m)"
         :class="
           mode === m
-            ? 'bg-sky-500 text-slate-950 font-bold'
-            : 'text-slate-400 hover:text-white'
+            ? 'bg-cyan-400 text-slate-950 font-bold shadow-[0_0_10px_#00f0ff]'
+            : 'text-slate-400 hover:text-fuchsia-300'
         "
         class="px-2 py-0.5 rounded uppercase transition cursor-pointer"
       >
